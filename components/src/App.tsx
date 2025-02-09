@@ -1,34 +1,64 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from 'react'
+import Button from './components/Button'
+import RedirectButton from './components/RedirectButton'
 
-function App() {
-  const [count, setCount] = useState(0)
+const App: React.FC = () => {
+  const [count, setCount] = useState<number>(0)
+
+  const green = count > 0 ? Math.min(count * 2.55, 255) : 0
+  const red = count < 0 ? Math.min(Math.abs(count) * 2.55, 255) : 0
+  const backgroundColor = `rgb(${red}, ${green}, 0)`
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div 
+      className="w-full min-h-screen flex flex-col justify-center items-center transition-colors duration-500" 
+      style={{ backgroundColor }}
+    >
+      <div className="flex flex-row gap-10">
+        <Button 
+          onClick={() => setCount(
+            (prev) => (prev < 100 ? prev + 5 : prev)
+          )}
+        >
+          Increment!
+        </Button>
+
+        <Button 
+          onClick={() => setCount(
+            (prev) => (prev > -100 ? prev - 5 : prev)
+          )}
+        >
+          Decrement!
+        </Button>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+      
+      <div className="mt-10 p-4 rounded-md bg-black text-white transition-colors duration-500">
+        <h1>
+          Background Volume : {count}%
+        </h1>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+
+      <div className='mt-10 flex flex-col gap-4 text-center'>
+        <RedirectButton 
+        url="https://youtu.be/dQw4w9WgXcQ?si=HmdPgdzvpitXP0fS"
+        >
+          Check this link!
+        </RedirectButton>
+
+        <RedirectButton 
+        url="https://youtu.be/NhHb9usKy6Q?si=0Kis8giWj1lloLFF"
+        >
+          Check this link!
+        </RedirectButton>
+
+        <RedirectButton 
+        url="https://youtu.be/QwLvrnlfdNo?si=qrDW6ylbR93JU5sq"
+        >
+          Check this link!
+        </RedirectButton>
+      </div>
+
+    </div>
   )
 }
 
