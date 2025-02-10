@@ -7,9 +7,12 @@ interface RedirectButtonProps {
 
 const RedirectButton: React.FC<RedirectButtonProps> = ({ url, children }) => {
   return (
-    <a href={url} target="_blank" rel="noopener noreferrer">
+    <a 
+    href={ url } 
+    target="_blank" 
+    rel="noopener noreferrer">
       <button className="bg-black text-white px-6 py-2 rounded-md cursor-pointer">
-        {children || "Click this link!"}
+        { children }
       </button>
     </a>
   )
