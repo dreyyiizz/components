@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import personRouter from "./api/person";
 import carRouter from "./api/cars";
 import employeeRouter from "./api/employee";
+import studentRouter from "./api/students";
 
 dotenv.config();
 
@@ -16,6 +17,8 @@ app.use(express.json());
 app.use("/persons", personRouter);
 app.use("/cars", carRouter)
 app.use("/employee", employeeRouter)
+app.use("/students", studentRouter)
+
 
 app.get("/", (req, res) => {
   res.send("API is running...");
