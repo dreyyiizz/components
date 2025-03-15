@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import StudentCard from "../components/StudentCard";
 import useStudents from "../hooks/students/useStudent";
 import { Student } from "../types/datatypes";
@@ -18,6 +18,10 @@ const StudentListPage = () => {
         expectedsalary: "",
         expecteddateofdefense: "",
     });
+
+    useEffect(() => {
+        getStudents(); // Fetch latest students on mount
+    }, []);
 
     const handleBack = () => {
         navigate("/main");
@@ -43,7 +47,7 @@ const StudentListPage = () => {
             expectedsalary: Number(formData.expectedsalary) || 0,
         });
 
-        await getStudents(); 
+        await getStudents(); // Refresh student list after adding
         setShowAddModal(false);
         setFormData({ firstname: "", lastname: "", groupname: "", role: "", expectedsalary: "", expecteddateofdefense: "" });
     };
@@ -87,7 +91,7 @@ const StudentListPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-20 p-6">
                 {sortedStudents.length > 0 ? (
                     sortedStudents.map((student: Student) => (
-                        <StudentCard key={student.id} {...student} />
+                        <StudentCard key={student.id} {...student} refreshStudents={getStudents} />
                     ))
                 ) : (
                     <h2 className="text-white text-lg mt-10 col-span-full">No students found.</h2>

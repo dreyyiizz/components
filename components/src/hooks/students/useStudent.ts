@@ -29,8 +29,8 @@ const useStudents = () => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     ...student,
-                    expectedsalary: student.expectedsalary ?? 0, // Ensure no undefined values
-                    expecteddateofdefense: student.expecteddateofdefense ?? "", // Ensure valid string
+                    expectedsalary: student.expectedsalary ?? 0, 
+                    expecteddateofdefense: student.expecteddateofdefense ?? "",
                 }),
             });
 
@@ -48,8 +48,8 @@ const useStudents = () => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     ...updates,
-                    expectedsalary: updates.expectedsalary ?? 0, // Ensure no undefined values
-                    expecteddateofdefense: updates.expecteddateofdefense ?? "", // Ensure valid string
+                    expectedsalary: updates.expectedsalary ?? 0, 
+                    expecteddateofdefense: updates.expecteddateofdefense ?? "", 
                 }),
             });
 

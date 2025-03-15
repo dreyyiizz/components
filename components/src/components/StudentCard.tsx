@@ -2,8 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import { Student } from "../types/datatypes";
 import useStudents from "../hooks/students/useStudent";
 
-const StudentCard = ({ id, firstname, lastname, groupname, role, expectedsalary, expecteddateofdefense }: Student) => {
-    const { updateStudent, deleteStudent, getStudents } = useStudents();
+const StudentCard = ({ id, firstname, lastname, groupname, role, expectedsalary, expecteddateofdefense, refreshStudents }: Student & { refreshStudents: () => void }) => {
+    const { updateStudent, deleteStudent } = useStudents();
     const [showModal, setShowModal] = useState(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const modalRef = useRef<HTMLDivElement>(null);
@@ -28,17 +28,6 @@ const StudentCard = ({ id, firstname, lastname, groupname, role, expectedsalary,
         });
     }, [firstname, lastname, groupname, role, expectedsalary, expecteddateofdefense]);
 
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-                setShowModal(false);
-            }
-        };
-
-        if (showModal) document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, [showModal]);
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: name === "expectedsalary" ? Number(value) || 0 : value }));
@@ -49,7 +38,7 @@ const StudentCard = ({ id, firstname, lastname, groupname, role, expectedsalary,
         if (!id) return console.error("Error: Student ID is undefined");
 
         await updateStudent(id, { ...formData, expectedsalary: Number(formData.expectedsalary) || 0 });
-        await getStudents(); 
+        refreshStudents(); // 👈 Refresh list after update
         setShowModal(false);
     };
 
@@ -57,7 +46,7 @@ const StudentCard = ({ id, firstname, lastname, groupname, role, expectedsalary,
         if (!id) return console.error("Error: Student ID is undefined");
 
         await deleteStudent(id);
-        await getStudents(); 
+        refreshStudents(); // 👈 Refresh list after delete
         setShowDeleteConfirm(false);
     };
 
@@ -129,3 +118,4 @@ const StudentCard = ({ id, firstname, lastname, groupname, role, expectedsalary,
 };
 
 export default StudentCard;
+
