@@ -15,16 +15,18 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/persons", personRouter);
-app.use("/cars", carRouter)
-app.use("/employee", employeeRouter)
-app.use("/students", studentRouter)
-
+app.use("/cars", carRouter);
+app.use("/employee", employeeRouter);
+app.use("/students", studentRouter);
 
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
 
+export default app;
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+if (process.env.NODE_ENV !== "test") {
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}

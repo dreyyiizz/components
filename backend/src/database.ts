@@ -3,13 +3,14 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const pool = new Pool({
+export const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false }, 
+  ssl: { rejectUnauthorized: false },
 });
 
-pool.connect()
-  .then(() => console.log("Connected to NeonDB successfully!"))
-  .catch((err) => console.error("Database connection error:", err));
+export const test_pool = new Pool({
+  connectionString: process.env.TESTING_DATABASE_URL,
+  ssl: { rejectUnauthorized: false },
+});
 
-export default pool;
+export const getPool = () => (process.env.NODE_ENV === "test" ? test_pool : pool);

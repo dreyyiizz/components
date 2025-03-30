@@ -1,4 +1,4 @@
-import pool from "../../database"; 
+import { pool } from "../../database";
 
 export const addEmployee = async(name: string, role: string, salary: string) => { 
     const result = await pool.query( 

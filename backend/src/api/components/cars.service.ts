@@ -1,4 +1,4 @@
-import pool from "../../database";
+import { pool } from "../../database";
 
 export const addCar = async( model: string, brand: string, color: string, plate_number: string) => { 
     const result = await pool.query( 

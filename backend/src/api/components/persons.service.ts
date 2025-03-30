@@ -1,4 +1,4 @@
-import pool from "../../database";
+import { pool } from "../../database";
 
 export const createPerson = async (firstname: string, lastname: string, middlename: string, age: number, sex: string) => {
   const result = await pool.query(
