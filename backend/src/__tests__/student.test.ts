@@ -163,7 +163,7 @@ describe('Student API Tests', () => {
   })
 
   // Sad Path for READ: Retrieve a student with an invalid id format
-  it("should return 404 when retrieving a student with an invalid id format that doesn't exist", async () => {
+  it("should return 404 when retrieving a student with an id format that doesn't exist", async () => {
     const res = await request(app).get('/students/invalid_id')
     expect(res.status).toBe(404)
     expect(res.body.error).toBe(undefined)
