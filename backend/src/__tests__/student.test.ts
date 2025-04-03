@@ -1,8 +1,11 @@
 import request from 'supertest'
 import { test_pool } from '../database'
 import app from '../server'
-import { mockStudent1, studentData } from '../globals/fakeData'
-
+import {
+  invalidMockStudent,
+  mockStudent1,
+  studentData,
+} from '../globals/fakeData'
 
 describe('Student API Tests', () => {
   let studentId: number
@@ -132,5 +135,12 @@ describe('Student API Tests', () => {
     const res2 = await request(app).post('/students').send(mockStudent1)
     expect(res2.status).toBe(409)
     expect(res2.body.error).toBe('Student with this information already exists')
+  })
+
+  it('should return 422 when data has invalid format', async () => {
+    // Sad path: Valid request with invalid data
+    const res = await request(app).post('/students').send(invalidMockStudent)
+    expect(res.status).toBe(422)
+    expect(res.body.error).toBe('Invalid data format: salary must be a number')
   })
 })

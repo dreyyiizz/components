@@ -18,6 +18,7 @@ export const handleAddStudent = async (req: Request, res: Response) => {
       expecteddateofdefense,
     } = req.body
 
+    // Check for required fields
     if (
       !firstname ||
       !lastname ||
@@ -27,6 +28,24 @@ export const handleAddStudent = async (req: Request, res: Response) => {
       !expecteddateofdefense
     ) {
       res.status(400).json({ error: 'Missing required fields' })
+      return
+    }
+
+    // Validate data types
+    if (typeof expectedsalary !== 'number') {
+      res.status(422).json({
+        error: 'Invalid data format: salary must be a number',
+      })
+      return
+    }
+
+    // Validate date format
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/
+    if (!dateRegex.test(expecteddateofdefense)) {
+      res.status(422).json({
+        error:
+          'Invalid data format: expected date of defense must be in YYYY-MM-DD format',
+      })
       return
     }
 
@@ -60,7 +79,7 @@ export const handleAddStudent = async (req: Request, res: Response) => {
   }
 }
 
-export const handleGetAllStudents = async (_req: Request, res: Response) => {
+export const handleGetAllStudents = async (req: Request, res: Response) => {
   try {
     const students = await getStudent()
     console.log('Students fetched from DB:', students)
