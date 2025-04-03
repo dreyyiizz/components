@@ -127,8 +127,26 @@ describe('Student API Tests', () => {
     expect(res.body.error).toBe('Student not found')
   })
 
+  // Sad path: Unauthorized delete
+  it('should return 403 when trying to delete a student without proper permissions', async () => {
+    const getRes = await request(app).get('/students') // for getting a valid student ID
+    const students = getRes.body
+    expect(students.length).toBeGreaterThan(0)
+    const studentId = students[0].id
+
+    // Set a header indicating the user lacks delete permissions
+    const deleteRes = await request(app)
+      .delete(`/students/${studentId}`)
+      .set('Authorization', 'Bearer guest-token') // Assuming this token lacks delete permissions
+
+    expect(deleteRes.status).toBe(403)
+    expect(deleteRes.body.error).toBe(
+      'Insufficient permissions to delete student'
+    )
+  })
+
+  // Sad path: Create a student with existing data
   it('should return 409 when trying to create a student with duplicate data', async () => {
-    // Sad path: Create a student with existing data
     await request(app).post('/students').send(mockStudent1) // Create student
 
     // Creating the same student again
@@ -137,10 +155,17 @@ describe('Student API Tests', () => {
     expect(res2.body.error).toBe('Student with this information already exists')
   })
 
+  // Sad path: Valid request with invalid data
   it('should return 422 when data has invalid format', async () => {
-    // Sad path: Valid request with invalid data
     const res = await request(app).post('/students').send(invalidMockStudent)
     expect(res.status).toBe(422)
     expect(res.body.error).toBe('Invalid data format: salary must be a number')
+  })
+
+  // Sad Path for READ: Retrieve a student with an invalid id format
+  it("should return 404 when retrieving a student with an invalid id format that doesn't exist", async () => {
+    const res = await request(app).get('/students/invalid_id')
+    expect(res.status).toBe(404)
+    expect(res.body.error).toBe(undefined)
   })
 })

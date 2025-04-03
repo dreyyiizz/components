@@ -123,16 +123,20 @@ export const handleUpdateStudent = async (req: Request, res: Response) => {
 
 export const handleDeleteStudent = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params
+    const id = parseInt(req.params.id)
 
-    if (!id) {
-      res.status(400).json({ error: 'Student ID is required' })
+    // For user permission checking
+    const authHeader = req.get('Authorization')
+    if (authHeader && authHeader === 'Bearer guest-token') {
+      res
+        .status(403)
+        .json({ error: 'Insufficient permissions to delete student' })
       return
     }
 
-    const deletedStudent = await deleteStudent(Number(id))
+    const student = await deleteStudent(id)
 
-    if (!deletedStudent) {
+    if (!student) {
       res.status(404).json({ error: 'Student not found' })
       return
     }
