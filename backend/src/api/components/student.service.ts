@@ -24,6 +24,21 @@ export const getStudent = async () => {
   return results.rows;
 };
 
+export const getStudentByDetails = async (
+  firstname: string,
+  lastname: string,
+  groupname: string
+) => {
+  const db = getPool()
+  const results = await db.query(
+    'SELECT * FROM students WHERE firstname = $1 AND lastname = $2 AND groupname = $3',
+    [firstname, lastname, groupname]
+  )
+
+  return results.rows[0] // Returns the student if found, undefined if not.
+}
+
+
 export const updateStudent = async (id: number, updates: Record<string, any>) => {
   const db = getPool();
   const setClauses = Object.keys(updates)

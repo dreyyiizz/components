@@ -6,3 +6,15 @@ export const studentData = {
     expectedsalary: 50000,
     expecteddateofdefense: "2025-05-10",
   };
+
+export const mockStudent1 = {
+    firstname: "Arthur",
+    lastname: "Morgan",
+    groupname: "Team A",
+    role: "Leader",
+    expectedsalary: 50000,
+    expecteddateofdefense: "2025-05-10",
+  };
+
+
+   
