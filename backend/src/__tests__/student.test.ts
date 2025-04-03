@@ -125,11 +125,11 @@ describe('Student API Tests', () => {
   })
 
   it('should return 409 when trying to create a student with duplicate data', async () => {
-    // Sad path: Create a student with conflicting data
-    await request(app).post('/students').send(studentData) // Create student
+    // Sad path: Create a student with existing data
+    await request(app).post('/students').send(mockStudent1) // Create student
 
-    // Then try to create the same student again
-    const res2 = await request(app).post('/students').send(studentData)
+    // Creating the same student again
+    const res2 = await request(app).post('/students').send(mockStudent1)
     expect(res2.status).toBe(409)
     expect(res2.body.error).toBe('Student with this information already exists')
   })
