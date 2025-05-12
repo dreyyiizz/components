@@ -20,7 +20,7 @@ const StudentListPage = () => {
     });
 
     useEffect(() => {
-        getStudents(); // Fetch latest students on mount
+        getStudents(); 
     }, []);
 
     const handleBack = () => {
@@ -47,7 +47,7 @@ const StudentListPage = () => {
             expectedsalary: Number(formData.expectedsalary) || 0,
         });
 
-        await getStudents(); // Refresh student list after adding
+        await getStudents();
         setShowAddModal(false);
         setFormData({ firstname: "", lastname: "", groupname: "", role: "", expectedsalary: "", expecteddateofdefense: "" });
     };

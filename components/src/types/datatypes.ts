@@ -14,3 +14,13 @@ export interface Student {
   expectedsalary? : number, 
   expecteddateofdefense? : string
 }
+
+export interface Task {
+  id: number | string;
+  title: string;
+  description?: string;
+  duedate?: Date | string;
+  completed?: boolean;
+}
+
+export type TaskType = 'basic' | 'timed' | 'checklist';

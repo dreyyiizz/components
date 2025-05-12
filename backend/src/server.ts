@@ -5,6 +5,8 @@ import personRouter from "./api/person";
 import carRouter from "./api/cars";
 import employeeRouter from "./api/employee";
 import studentRouter from "./api/students";
+import todolistRouter from "./api/todolist";
+import checklistRouter from "./api/checklist";
 
 dotenv.config();
 
@@ -18,6 +20,8 @@ app.use("/persons", personRouter);
 app.use("/cars", carRouter);
 app.use("/employee", employeeRouter);
 app.use("/students", studentRouter);
+app.use("/todolist", todolistRouter)
+app.use("/todolist", checklistRouter); 
 
 app.get("/", (req, res) => {
   res.send("API is running...");

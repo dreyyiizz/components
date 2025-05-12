@@ -45,6 +45,10 @@ const MainPage: React.FC = () => {
     navigate("/studentlist")
   }
 
+  const handleTodoListPage = () => { 
+    navigate("/todolist")
+  }
+
   return (
     <div
       className="w-full min-h-screen flex flex-col justify-center items-center transition-colors duration-500"
@@ -90,6 +94,12 @@ const MainPage: React.FC = () => {
           See Students!
         </button>
 
+        <button
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 cursor-pointer"
+          onClick={ handleTodoListPage }
+        >
+          See To Do List!
+        </button>
       </div>
     </div>
   );
