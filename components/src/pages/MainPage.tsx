@@ -80,6 +80,7 @@ const MainPage: React.FC = () => {
 
          <div className="w-full h-full overscroll-x-auto overflow-auto">
           {employee.map((employee: Employee) => <EmployeeCard
+          key={employee.name}
           name={employee.name}
           salary={employee.salary}
           role={employee.role}

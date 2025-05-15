@@ -8,3 +8,10 @@ For testing
 - fake data can be seen under backend\src\globals\fakeData.ts
 - run npm test
 - .env is already provided!
+
+For End to End testing (Cypress)
+- npm i
+- cd components (frontend)
+- npm run dev 
+- npx cypress open (new terminal)
+- test file can be seen here components\cypress\e2e\app.cy.ts

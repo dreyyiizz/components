@@ -113,7 +113,10 @@ const StudentListPage = () => {
                                 <button type="button" className="bg-gray-700 text-white px-3 py-2 rounded-md cursor-pointer" onClick={() => setShowAddModal(false)}>
                                     Cancel
                                 </button>
-                                <button type="submit" className="bg-green-600 text-white px-3 py-2 rounded-md cursor-pointer">
+                                <button 
+                                data-testid="add-student-button"
+                                type="submit" 
+                                className="bg-green-600 text-white px-3 py-2 rounded-md cursor-pointer">
                                     Add
                                 </button>
                             </div>
