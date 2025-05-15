@@ -130,3 +130,118 @@ describe('Full Application Test Suite', () => {
     });
   });
 });
+
+describe('Student List Page', () => {
+  beforeEach(() => {
+    cy.intercept('GET', '**/students', {
+      statusCode: 200,
+      body: [
+        {
+          id: 1,
+          firstname: 'Alice',
+          lastname: 'Johnson',
+          groupname: 'Group A',
+          role: 'Student',
+          expectedsalary: 30000,
+          expecteddateofdefense: '2023-12-15',
+        },
+      ],
+    }).as('initialStudents')
+
+    cy.visit('/studentlist')
+    cy.wait('@initialStudents')
+  })
+
+  it('should display the student list correctly', () => {
+    cy.contains('Students').should('be.visible')
+    cy.contains('Johnson, Alice').should('be.visible')
+    cy.contains('Group A').should('be.visible')
+  })
+
+  it('should add a new student', () => {
+    cy.intercept('POST', '**/students', {
+      statusCode: 201,
+      body: {
+        id: 2,
+        firstname: 'Bob',
+        lastname: 'Smith',
+        groupname: 'Group B',
+        role: 'Student',
+        expectedsalary: 35000,
+        expecteddateofdefense: '2023-12-20',
+      },
+    }).as('addStudent')
+
+    cy.intercept('GET', '**/students', {
+      statusCode: 200,
+      body: [
+        {
+          id: 1,
+          firstname: 'Alice',
+          lastname: 'Johnson',
+          groupname: 'Group A',
+          role: 'Student',
+          expectedsalary: 30000,
+          expecteddateofdefense: '2023-12-15',
+        },
+        {
+          id: 2,
+          firstname: 'Bob',
+          lastname: 'Smith',
+          groupname: 'Group B',
+          role: 'Student',
+          expectedsalary: 35000,
+          expecteddateofdefense: '2023-12-20',
+        },
+      ],
+    }).as('getUpdatedStudents')
+
+    cy.contains('+').click()
+
+    cy.get('input[name="firstname"]').type('Bob')
+    cy.get('input[name="lastname"]').type('Smith')
+    cy.get('input[name="groupname"]').type('Group B')
+    cy.get('input[name="role"]').type('Student')
+    cy.get('input[name="expectedsalary"]').type('35000')
+    cy.get('input[name="expecteddateofdefense"]').type('2023-12-20')
+
+    cy.get('[data-testid="add-student-button"]').click()
+
+    cy.wait('@addStudent')
+    cy.wait('@getUpdatedStudents')
+
+    cy.contains(/Smith.*Bob|Bob.*Smith/i).should('be.visible')
+  })
+
+  it('should sort students alphabetically', () => {
+    cy.intercept('GET', '**/students', {
+      statusCode: 200,
+      body: [
+        {
+          id: 1,
+          firstname: 'Alice',
+          lastname: 'Johnson',
+          groupname: 'Group A',
+        },
+        {
+          id: 2,
+          firstname: 'Bob',
+          lastname: 'Adams',
+          groupname: 'Group B',
+        },
+      ],
+    }).as('getStudents')
+
+    cy.visit('/studentlist')
+    cy.wait('@getStudents')
+
+    cy.get('select').should('exist').select('alphabetical')
+
+    cy.get('.grid > div').first().should('contain.text', 'Adams, Bob')
+  })
+
+  it('should navigate back to main page', () => {
+    cy.contains('Back').should('exist').click()
+    cy.url().should('include', '/main')
+  })
+})
